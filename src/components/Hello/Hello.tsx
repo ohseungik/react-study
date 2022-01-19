@@ -1,9 +1,11 @@
 import React from "react";
 
 const Hello = () => {
+    const hello = "안녕하세요.";
+
     return (
         <div>
-            안녕하세요.
+            {hello}
         </div>
     )
 }
