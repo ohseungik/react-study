@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CreateUser from "./CreateUser";
 
 type user = {
@@ -11,6 +11,17 @@ type user = {
 const UserList = () => {
     const User = (props: { user: user; }) => {
         const { user } = props;
+
+        useEffect(() => {
+          console.log("컴포넌트 랜더링 시작");
+          console.log(user);
+    
+          return () => {
+            console.log("컴포넌트 랜더링 종료")
+            console.log(user);
+          } 
+        }, [user]);
+
         return (
             <div>
                 <b style={{cursor: "pointer", color: user.active ? 'green' : 'black'}} onClick={() => onToggle(user.id)}>{user.username}</b> <span>{user.email}</span>
