@@ -1,8 +1,8 @@
 import React from "react";
 
-type Color = 'red';
+type color = 'red';
 
-const Hello = (props: { name: String, color: Color, isSpecial: Boolean; }) => {
+const Hello = (props: { name: string, color: color, isSpecial: boolean; }) => {
     const { name, color, isSpecial } = props;
     const hello = "안녕하세요.";
 
