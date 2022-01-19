@@ -5,9 +5,10 @@ import Hello from './components/Hello/Hello';
 import "./css/index.scss";
 
 const App = () => {
+
     return (
         <>
-        <Hello/>
+        <Hello name="react"/>
         </>
     )
 }

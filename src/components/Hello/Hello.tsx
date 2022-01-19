@@ -1,12 +1,14 @@
 import React from "react";
 
-const Hello = () => {
+const Hello = (props: { name: String; }) => {
+    const { name } = props;
     const hello = "안녕하세요.";
 
     return (
-        <div>
-            {hello}
-        </div>
+        <>
+            <div>{name}</div>
+            <div>{hello}</div>
+        </>
     )
 }
 
