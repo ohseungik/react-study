@@ -6,10 +6,9 @@ import Wrapper from './components/Wrapper/Wrapper';
 import "./css/index.scss";
 
 const App = () => {
-
     return (
         <Wrapper>
-            <Hello name="react" color="red"/>
+            <Hello name="react" color="red" isSpecial/>
             <Hello color="red"></Hello>
         </Wrapper>
     )
