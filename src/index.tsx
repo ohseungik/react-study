@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Hello from './components/Hello/Hello';
+import Wrapper from './components/Wrapper/Wrapper';
 
 import "./css/index.scss";
 
 const App = () => {
 
     return (
-        <>
-        <Hello name="react" color="red"/>
-        <Hello color="red"></Hello>
-        </>
+        <Wrapper>
+            <Hello name="react" color="red"/>
+            <Hello color="red"></Hello>
+        </Wrapper>
     )
 }
 
