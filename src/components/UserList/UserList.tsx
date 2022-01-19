@@ -4,7 +4,8 @@ import CreateUser from "./CreateUser";
 type user = {
     id: number,
     username: string,
-    email: string
+    email: string,
+    active: boolean
 }
 
 const UserList = () => {
@@ -12,7 +13,7 @@ const UserList = () => {
         const { user } = props;
         return (
             <div>
-                <b>{user.username}</b> <span>{user.email}</span>
+                <b style={{cursor: "pointer", color: user.active ? 'green' : 'black'}} onClick={() => onToggle(user.id)}>{user.username}</b> <span>{user.email}</span>
                 <button onClick={() => { onRemove(user.id) }}>삭제</button>
             </div>
         )
@@ -39,16 +40,19 @@ const UserList = () => {
         id: 1,
         username: "velopert",
         email: "public.velopert@gmail.com",
+        active: true,
       },
       {
         id: 2,
         username: "tester",
         email: "tester@example.com",
+        active: false
       },
       {
         id: 3,
         username: "liz",
         email: "liz@example.com",
+        active: false
       },
     ]);
 
@@ -58,7 +62,8 @@ const UserList = () => {
         const user = {
             id: nextId.current,
             username,
-            email
+            email,
+            active: false
         }
 
         setUsers([...users, user]);
@@ -72,6 +77,10 @@ const UserList = () => {
 
     const onRemove = (id: number) => {
         setUsers(users.filter(user => user.id !== id))
+    }
+
+    const onToggle = (id: number) => {
+        setUsers(users.map(user => user.id === id ? {...user, active: !user.active } : user))
     }
 
     return (
