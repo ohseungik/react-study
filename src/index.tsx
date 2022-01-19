@@ -9,6 +9,7 @@ const App = () => {
     return (
         <>
         <Hello name="react" color="red"/>
+        <Hello color="red"></Hello>
         </>
     )
 }

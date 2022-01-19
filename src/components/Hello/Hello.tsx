@@ -14,4 +14,8 @@ const Hello = (props: { name: String, color: Color; }) => {
     )
 }
 
+Hello.defaultProps = {
+    name: "기본이름"
+}
+
 export default Hello;
