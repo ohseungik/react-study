@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import CreateUser from "./CreateUser";
 
 type user = {
@@ -9,16 +9,15 @@ type user = {
 }
 
 const UserList = () => {
+    const countActiveUsers = (users: { id: number; username: string; email: string; active: boolean; }[]) =>  {
+      return users.filter((user: user) => user.active).length;
+    }
+
     const User = (props: { user: user; }) => {
         const { user } = props;
 
         useEffect(() => {
-          console.log("컴포넌트 랜더링 시작");
-          console.log(user);
-    
           return () => {
-            console.log("컴포넌트 랜더링 종료")
-            console.log(user);
           } 
         }, [user]);
 
@@ -94,12 +93,15 @@ const UserList = () => {
         setUsers(users.map(user => user.id === id ? {...user, active: !user.active } : user))
     }
 
+    const count = useMemo(() => countActiveUsers(users), [users]);
+
     return (
       <div>
         <CreateUser username={username} email={email} onChange={onChange} onCreate={onCreate}/> 
         {users.map((user, index) => (
           <User user={user} key={user.id} />
         ))}
+        <div>활성사용자 수 : {count}</div>
       </div>
     );
 }
