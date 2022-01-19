@@ -67,5 +67,10 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
 
         new MiniCssExtractPlugin({filename: `[name].css`})
-    ]
+    ],
+
+    performance: {
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    }
 }
