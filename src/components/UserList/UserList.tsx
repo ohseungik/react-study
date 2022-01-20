@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useReducer } from "react";
+import UseInputs from "../Hooks/UseInputs";
 import CreateUser from "./CreateUser";
 
 type user = {
@@ -14,11 +15,6 @@ const UserList = () => {
     }
 
     const initialState = {
-      inputs: {
-        username: '',
-        email: ''
-      },
-
       users: [
         {
           id: 1,
@@ -43,24 +39,13 @@ const UserList = () => {
 
     const reducer = (state: any, action: any) => {
       switch (action.type) {
-        case 'CHANGE_INPUT':
-          return {
-            ...state,
-            inputs: {
-              ...state.inputs,
-              [action.name]: action.value
-            }
-          };
-
         case 'CREATE_USER':
           return {
-            inputs: initialState.inputs,
             users: [...state.users, action.user]
           }
 
         case 'TOGGLE_USER':
           return {
-            ...state,
             users: state.users.map((user: { id: string; active: boolean; }) => 
               user.id === action.id ? { ...user, active: !user.active } : user
             )
@@ -68,7 +53,6 @@ const UserList = () => {
 
         case 'REMOVE_USER':
           return {
-            ...state,
             users: state.users.filter((user: { id: string; }) => user.id !== action.id)
           }
         default:
@@ -80,7 +64,7 @@ const UserList = () => {
     const nextId = useRef(4);
 
     const { users } = state;
-    const { username, email } = state.inputs;
+    const [{ username, email }, onChange, reset] = UseInputs({username: '', email: ''});
 
     const User = (props: { user: user; }) => {
         const { user } = props;
@@ -98,16 +82,10 @@ const UserList = () => {
         )
     }
 
-    const onChange = useCallback((e: { target: { name: string; value: string; }; }) => {
-        const { name, value } = e.target;
-
-        dispatch({type: 'CHANGE_INPUT', name, value});
-    }, []);
-
-
     const onCreate = useCallback(() => {
         dispatch({type: 'CREATE_USER', user: {id: nextId.current, username, email, active: false}});
 
+        reset();
         nextId.current += 1;
     }, [username, email]);
 
