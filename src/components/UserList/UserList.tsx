@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useReducer } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useReducer, createContext } from "react";
 import UseInputs from "../Hooks/UseInputs";
 import CreateUser from "./CreateUser";
 
@@ -8,6 +8,8 @@ type user = {
     email: string,
     active: boolean
 }
+
+export const UserDisaptch = createContext(null);
 
 const UserList = () => {
     const countActiveUsers = (users: { id: number; username: string; email: string; active: boolean; }[]) =>  {
@@ -46,6 +48,7 @@ const UserList = () => {
 
         case 'TOGGLE_USER':
           return {
+            ...state,
             users: state.users.map((user: { id: string; active: boolean; }) => 
               user.id === action.id ? { ...user, active: !user.active } : user
             )
@@ -53,6 +56,7 @@ const UserList = () => {
 
         case 'REMOVE_USER':
           return {
+            ...state,
             users: state.users.filter((user: { id: string; }) => user.id !== action.id)
           }
         default:
@@ -60,13 +64,11 @@ const UserList = () => {
       }
     }
 
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const nextId = useRef(4);
+    const [state, dispatch]: any = useReducer(reducer, initialState);
 
     const { users } = state;
-    const [{ username, email }, onChange, reset] = UseInputs({username: '', email: ''});
 
-    const User = (props: { user: user; }) => {
+    const User = React.memo((props: { user: user; }) => {
         const { user } = props;
 
         useEffect(() => {
@@ -76,36 +78,23 @@ const UserList = () => {
 
         return (
             <div>
-                <b style={{cursor: "pointer", color: user.active ? 'green' : 'black'}} onClick={() => onToggle(user.id)}>{user.username}</b> <span>{user.email}</span>
-                <button onClick={() => { onRemove(user.id) }}>삭제</button>
+                <b style={{cursor: "pointer", color: user.active ? 'green' : 'black'}} onClick={() => dispatch({type: 'TOGGLE_USER', id: user.id})}>{user.username}</b> <span>{user.email}</span>
+                <button onClick={() => {  dispatch({type: 'REMOVE_USER', id: user.id}); }}>삭제</button>
             </div>
         )
-    }
-
-    const onCreate = useCallback(() => {
-        dispatch({type: 'CREATE_USER', user: {id: nextId.current, username, email, active: false}});
-
-        reset();
-        nextId.current += 1;
-    }, [username, email]);
-
-    const onRemove = useCallback((id: number) => {
-        dispatch({type: 'REMOVE_USER', id});
-    }, []);
-
-    const onToggle = useCallback((id: number) => {
-        dispatch({type: 'TOGGLE_USER', id});
-    }, []);
+    })
 
     const count = useMemo(() => countActiveUsers(users), [users]);
 
     return (
       <div>
-        <CreateUser username={username} email={email} onChange={onChange} onCreate={onCreate}/> 
-        {users.map((user: { id: any; username: any; email: any; active: any; }, index: any) => (
-          <User user={user} key={user.id} />
-        ))}
-        <div>활성사용자 수 : {count}</div>
+        <UserDisaptch.Provider value={dispatch}>
+            <CreateUser/> 
+            {users.map((user: { id: any; username: any; email: any; active: any; }, index: any) => (
+              <User user={user} key={user.id} />
+            ))}
+            <div>활성사용자 수 : {count}</div>
+        </UserDisaptch.Provider>
       </div>
     );
 }
