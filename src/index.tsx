@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import TodoCreate from './components/Todo/TodoCreate';
 import TodoHead from './components/Todo/TodoHead';
 import TodoList from './components/Todo/TodoList';
+import { TodoProvider } from './components/Todo/TodoProvider';
 import TodoTemplate from './components/Todo/TodoTemplate';
 // import Counter from './components/Counter/Counter';
 // import Hello from './components/Hello/Hello';
@@ -13,12 +15,13 @@ import "./css/index.scss";
 
 const App = () => {
     return (
-        <>      
+        <TodoProvider>    
             <TodoTemplate>
                 <TodoHead/>
                 <TodoList/>
+                <TodoCreate/>
             </TodoTemplate>      
-        </>
+        </TodoProvider>
 
     )
 }

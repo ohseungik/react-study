@@ -1,14 +1,16 @@
 import React from "react";
 import "./Todo.scss";
 import TodoItem from "./TodoItem";
+import { useTodoState } from "./TodoProvider";
 
 const TodoList = () => {
+    const todos = useTodoState();
+
     return (
       <div className="TodoListBlock">
-        <TodoItem text="프로젝트 생성하기" done={true} />
-        <TodoItem text="컴포넌트 스타일링 하기" done={true} />
-        <TodoItem text="Context 만들기" done={false} />
-        <TodoItem text="기능 구현하기" done={false} />
+          {todos.map((todo: { id: React.Key | null | undefined; text: any; done: any; }) => (
+              <TodoItem key={todo.id} id={todo.id} text={todo.text} done={todo.done}/>
+          ))}
       </div>
     );
 }
